@@ -1,0 +1,1 @@
+Simple GeoGuessr-esque game.
