@@ -57,7 +57,7 @@
 .input-panel {
     flex: 1;
     padding: 1rem;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-primary);
     border-left: 1px solid #333;
     z-index: 10; // input panel above image
     display: flex;
@@ -81,13 +81,23 @@
         opacity: 0.8; 
     }
     input {
-        background: var(--bg-primary); 
+        background: var(--bg-secondary); 
         border: 1px solid var(--border-color); 
         color: var(--text-main); 
         padding: 1rem;
         font-family: var(--font-main);
         font-size: 1.1rem; 
         border-radius: 4px;
+
+        // stop increment/decrement arrows for input
+        // chrome, safari, edge, opera
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        // firefox
+        -moz-appearance: textfield;
 
         &:focus { 
             outline: none; 
@@ -124,7 +134,7 @@
     min-width: 100px; 
 
     .label {
-        color: var(--text-muted);
+        color: var(--text-main);
         font-size: 0.8rem;
         margin-bottom: 0.5rem;
         text-transform: uppercase;
@@ -132,7 +142,7 @@
     }
 
     .value {
-        color: var(--accent-color);
+        color: var(--hover);
         font-size: 1.5rem;
         font-weight: bold;
     }

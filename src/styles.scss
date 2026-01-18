@@ -3,43 +3,28 @@
     // fonts
     --font-main: 'Courier New', Courier, monospace;
 
-    // matrixy dark theme
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2a2a2a;
-    --bg-tertiary: #333333; /* Inputs, Stat boxes */
+    // look at angular material themeing
+    // oceany forest theme
+    --bg-primary: #101d15;
+    --bg-secondary: #0d533c;
+    --bg-tertiary: #71bbb9;
     --bg-black: #000000;
+    --white: #ffffff;
+    --bg-muted: #3b834d;
     
     --text-main: #f0f0f0;
     --text-muted: #888888;
-    --text-nav: #bbbbbb;
 
-    --accent-color: #00ff9d;
-    --accent-hover: #00cc7a;
+    --hover: #00cc7a;
     
     --border-color: #444444;
     --error-color: #ff4444;
 
-    // Alternative Color Scheme, looks bad at the moment, try different pallets
-    // --bg-primary: #e4d6c5;
-    // --bg-secondary: #8d957e;
-    // --bg-tertiary: #984216;  /* Inputs, Stat boxes */
-    
-    // --bg-black: #000000;
-    // --bg-lightblue: #78898f;
-    // --bg-darkerblue: #5a6b70;
-    // /* Text */
-    // --text-main: #f0f0f0;
-    // --text-muted: #888888;
-    // --text-nav: #bbbbbb;
-
-    // /* Accents */
-    // --accent-color: #8d957e;
-    // --accent-hover:  #984216; 
-    // --accent-glow: rgba(0, 255, 157, 0.3);
-    
-    // /* Functional */
-    // --border-color: #78898f;
-    // --error-color: #ff4444;
+    // earthy desert grassland theme.
+    // #984216;
+    // #e4d6c5;
+    // $78898f;
+    // 8d957e;
 }
 
 .leaflet-tooltip {
@@ -47,6 +32,13 @@
     font-weight: bold;
     border: none;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-primary); 
+    font-family: var(--font-main);
 }
 
 h1 {
@@ -58,32 +50,29 @@ h1 {
 .btn {
     padding: 1rem 3rem;
     font-size: 1.5rem;
-    // background-color: var(--bg-lightblue);
-    background-color: var(--accent-color);
+    background-color: var(--bg-secondary);
     color: var(--text-main);
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
-    font-family: var(--font-main); /* Ensure font matches app */
+    font-family: var(--font-main);
     text-transform: uppercase;
     transition: transform 0.2s, background-color 0.2s;
     display: inline-block; 
 
     &:hover {
-        // background-color: var(--bg-darkerblue);
-        background-color: var(--accent-hover);
+        background-color: var(--bg-tertiary);
         transform: scale(1.05);
     }
 
     &:disabled {
-        background: var(--border-color);
+        background: var(--bg-muted);
         color: var(--text-muted);
         cursor: not-allowed;
         transform: none;
     }
 
-    /* Variant: Full width for the sidebar panel */
     &.centered {
         display: block;
         width: fit-content;
