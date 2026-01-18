@@ -186,6 +186,10 @@ export class GuessScreen {
         this.map.fitBounds(points, { padding: [50, 50] });
     }
 
+    getCurrDistance(): number {
+        return this.game.getCurrDistance();
+    }
+
     getCurrScore(): number {
         return this.game.getCurrScore();
     }
@@ -199,6 +203,20 @@ export class GuessScreen {
         if (this.game.isGameOver()) {
             this.router.navigate(['/end']);
         } 
+    }
+
+    getGuessFeedbackMessage(): string {
+        const distance = this.game.getCurrDistance();
+        
+        // Format: 1500m -> 1.50 km, 45m -> 45 m
+        const formattedDistance = distance >= 1000 
+            ? (distance / 1000).toFixed(2) + 'km' 
+            : distance.toFixed(2) + 'm';
+
+        if (distance <= 50) {
+            return `Nice guess! You were ${formattedDistance} away.`;
+        }
+        return `Bad luck, you were ${formattedDistance} away. Need to get closer to score points!`;
     }
 
 }

@@ -38,10 +38,24 @@
                     <label for="lat">Latitude</label>
                     <!-- formControlName connects to latitude from guessForm -->
                     <input id="lat" type="number" formControlName="latitude" step="any">
+                    @if (guessForm.get('latitude')?.invalid && (guessForm.get('latitude')?.touched || guessForm.get('latitude')?.dirty)) {
+                        <span class="invalid-input-message">
+                            Latitude must be between -90 and 90
+                        </span>
+                    } @else {
+                        <span class="invalid-input-message"></span>
+                    }
                 </div>
                 <div class="input-group">
                     <label for="lng">Longitude</label>
                     <input id="lng" type="number" formControlName="longitude" step="any">
+                    @if (guessForm.get('longitude')?.invalid && (guessForm.get('longitude')?.touched || guessForm.get('longitude')?.dirty)) {
+                        <span class="invalid-input-message">
+                            Longitude must be between -180 and 180
+                        </span>
+                    } @else {
+                        <span class="invalid-input-message"></span>
+                    }
                 </div>
                 <!-- uses guessForm validators -->
                 <button type="submit" class="btn centered" [disabled]="guessForm.invalid">
@@ -53,6 +67,10 @@
                 <h2>Results!</h2>
                 <!-- leaflet map -->
                 <div id="result-map"></div>
+
+                <div class="feedback-message" [class.success]="50 >= getCurrDistance() " [class.failure]="getCurrDistance() > 50">
+                    {{ getGuessFeedbackMessage() }}
+                </div>
 
                 <div class="results-container">
                     <div class="results-box">

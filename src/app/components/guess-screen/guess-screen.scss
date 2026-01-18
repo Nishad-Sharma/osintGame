@@ -86,7 +86,7 @@
         color: var(--text-main); 
         padding: 1rem;
         font-family: var(--font-main);
-        font-size: 1.1rem; 
+        font-size: 1.1rem;
         border-radius: 4px;
 
         // stop increment/decrement arrows for input
@@ -100,10 +100,21 @@
         -moz-appearance: textfield;
 
         &:focus { 
-            outline: none; 
-            border-color: var(--accent-color); 
+            outline: none;
+            border-color: var(--accent-color);
         }
     }
+
+    .invalid-input-message {
+        color: var(--error-color);
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        font-weight: bold;
+        display: block;
+        min-height: 1.2em;
+        visibility: visible;
+    }
+    
 }
 
 #result-map {
@@ -145,5 +156,23 @@
         color: var(--hover);
         font-size: 1.5rem;
         font-weight: bold;
+    }
+}
+
+.feedback-message {
+    text-align: center;
+    margin: 1rem 0;
+    font-size: 1.1rem;
+    font-family: var(--font-main);
+    font-weight: bold;
+    padding: 0 1rem;
+    line-height: 1.4;
+
+    &.success {
+        color: var(--hover); 
+    }
+
+    &.failure {
+        color: var(--bg-tertiary); 
     }
 }
