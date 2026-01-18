@@ -1,0 +1,82 @@
+<!-- leaflet styles -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+
+
+<div class="guess-page-wrapper">
+    <div class="image-container">
+        <!-- mouse events -->
+        <div class="image-viewport"
+            (wheel)="onWheel($event)"
+            (mousedown)="onMouseDown($event)"
+            (mouseup)="onMouseUp()"
+            (mouseleave)="onMouseUp()"
+            (mousemove)="onMouseMove($event)">
+        
+            <!-- reactive graph,  checks location signal and updates this attribute only -->
+            <img 
+                [src]="game.currentImage()?.path" 
+                [style.transform]="transformStyle"
+                alt="Target Location"
+                class="image-panel"
+                [class.draggable]="zoom > 1" 
+                [class.dragging]="isPanning"
+            >
+        </div>
+    </div>
+
+    <div class="input-panel">
+        @if (!game.isGuessSubmitted()) {
+            <h2>Input Coordinates</h2>
+            <!-- binds entire form to guessForm -->
+            <form [formGroup]="guessForm" (ngSubmit)="onSubmit()">
+                <div class="input-group">
+                    <label for="lat">Latitude</label>
+                    <!-- formControlName connects to latitude from guessForm -->
+                    <input id="lat" type="number" formControlName="latitude" step="any">
+                </div>
+                <div class="input-group">
+                    <label for="lng">Longitude</label>
+                    <input id="lng" type="number" formControlName="longitude" step="any">
+                </div>
+                <!-- uses guessForm validators -->
+                <button type="submit" class="btn centered" [disabled]="guessForm.invalid">
+                    Submit
+                </button>
+            </form>    
+        } @else {
+            <div>
+                <h2>Results!</h2>
+                <!-- leaflet map -->
+                <div id="result-map"></div>
+
+                <div class="results-container">
+                    <div class="results-box">
+                        <span class="label">Points Earned: </span>
+                        <span class="value active">+{{ getCurrScore() }}</span>
+                    </div>
+                </div>
+                <div></div>
+                <div class="results-container">
+                    <div class="results-box">
+                        <span class="label">Total Points: </span>
+                        <span class="value active">{{ getTotalScore() }}</span>
+                    </div>
+                </div>
+                @if (!game.isLastImage()) {
+                    <button class="btn centered" (click)="nextRound()">
+                        Next Image
+                    </button>
+                } @else {
+                    <button class="btn centered" (click)="nextRound()">
+                        See Results
+                    </button>
+                }
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,21 @@
+/* filepath: src/app/components/landing-screen/landing-screen.component.scss */
+.landing-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: var(--font-main);
+}
+
+.description {
+    background: var(--bg-lightblue);
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem;
+    max-width: 500px;
+    text-align: center;
+    font-family: inherit;
+}

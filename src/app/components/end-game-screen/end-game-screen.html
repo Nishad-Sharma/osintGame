@@ -1,0 +1,11 @@
+<div class="end-game-container">
+    <div class="results">
+        <p class="label">Final Score:</p>
+        <div class="score">
+            <span>{{ game.getTotalScore() }}</span>
+        </div>
+    </div>
+    <button class="btn" (click)="restartGame()">
+        Play Again
+    </button>
+</div>

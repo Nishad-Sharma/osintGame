@@ -1,0 +1,15 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /gameLogs/{gameId} {
+      allow create, read: if true;
+      allow update, delete: if false;
+    }
+
+    match /locationImages/{imageId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

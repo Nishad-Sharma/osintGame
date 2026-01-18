@@ -1,0 +1,39 @@
+/* filepath: /Users/nishadsharma/osintGame/src/app/components/end-game-screen/end-game-screen.scss */
+.end-game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: var(--font-main);
+}
+
+.results {
+    background: var(--bg-secondary);
+    padding: 2rem 4rem;
+    border-radius: 8px;
+    text-align: center;
+    margin: 2rem;
+    border: 1px solid var(--border-color);
+
+    .label { 
+        color: var(--text-muted); 
+        letter-spacing: 2px; 
+        margin: 1rem; 
+    }
+    
+    .score {
+        font-size: 4rem;
+        font-weight: bold; 
+        color: var(--accent-color); 
+    }
+}
+
+.message {
+    color: var(--text-main);
+    font-size: 1.2rem;
+    margin: 2rem;
+    opacity: 0.8;
+}

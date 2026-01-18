@@ -1,0 +1,92 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+    // fonts
+    --font-main: 'Courier New', Courier, monospace;
+
+    // matrixy dark theme
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2a2a2a;
+    --bg-tertiary: #333333; /* Inputs, Stat boxes */
+    --bg-black: #000000;
+    
+    --text-main: #f0f0f0;
+    --text-muted: #888888;
+    --text-nav: #bbbbbb;
+
+    --accent-color: #00ff9d;
+    --accent-hover: #00cc7a;
+    
+    --border-color: #444444;
+    --error-color: #ff4444;
+
+    // Alternative Color Scheme, looks bad at the moment, try different pallets
+    // --bg-primary: #e4d6c5;
+    // --bg-secondary: #8d957e;
+    // --bg-tertiary: #984216;  /* Inputs, Stat boxes */
+    
+    // --bg-black: #000000;
+    // --bg-lightblue: #78898f;
+    // --bg-darkerblue: #5a6b70;
+    // /* Text */
+    // --text-main: #f0f0f0;
+    // --text-muted: #888888;
+    // --text-nav: #bbbbbb;
+
+    // /* Accents */
+    // --accent-color: #8d957e;
+    // --accent-hover:  #984216; 
+    // --accent-glow: rgba(0, 255, 157, 0.3);
+    
+    // /* Functional */
+    // --border-color: #78898f;
+    // --error-color: #ff4444;
+}
+
+.leaflet-tooltip {
+    font-family: var(--font-main);
+    font-weight: bold;
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+h1 {
+    font-size: 3rem;
+    margin: 2rem;
+    color: var(--bg-lightblue);
+}
+
+.btn {
+    padding: 1rem 3rem;
+    font-size: 1.5rem;
+    // background-color: var(--bg-lightblue);
+    background-color: var(--accent-color);
+    color: var(--text-main);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: var(--font-main); /* Ensure font matches app */
+    text-transform: uppercase;
+    transition: transform 0.2s, background-color 0.2s;
+    display: inline-block; 
+
+    &:hover {
+        // background-color: var(--bg-darkerblue);
+        background-color: var(--accent-hover);
+        transform: scale(1.05);
+    }
+
+    &:disabled {
+        background: var(--border-color);
+        color: var(--text-muted);
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Variant: Full width for the sidebar panel */
+    &.centered {
+        display: block;
+        width: fit-content;
+        margin: 0 auto;
+    }
+}
