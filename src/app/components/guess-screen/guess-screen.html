@@ -15,7 +15,12 @@
             (mousedown)="onMouseDown($event)"
             (mouseup)="onMouseUp()"
             (mouseleave)="onMouseUp()"
-            (mousemove)="onMouseMove($event)">
+            (mousemove)="onMouseMove($event)"
+            
+            (touchstart)="onTouchStart($event)"
+            (touchmove)="onTouchMove($event)"
+            (touchend)="onTouchEnd()"
+            (touchcancel)="onTouchEnd()">
         
             <!-- reactive graph,  checks location signal and updates this attribute only -->
             <img 

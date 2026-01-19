@@ -1,11 +1,13 @@
 .guess-page-wrapper {
     display: flex;
     flex-direction: row; // default desktop
-    height: 100vh;
+    height: 100dvh; // need dvh for mobile url bar issues
     background-color: var(--bg-primary);
     color: var(--text-main);
     font-family: var(--font-main);
     overflow: hidden;
+
+    overscroll-behavior: none;
 
     @media (max-width: 768px) { 
         flex-direction: column; 
@@ -34,6 +36,8 @@
     justify-content: center;
     overflow: hidden; // stop scroll when zoomed, replaced with pan.
     cursor: default;
+
+    touch-action: none;
 }
 
 .image-panel {
@@ -51,6 +55,10 @@
     &.dragging {
         cursor: grabbing;
         transition: none;
+    }
+
+    @media (max-width: 768px) {
+        justify-content: flex-start; 
     }
 }
 

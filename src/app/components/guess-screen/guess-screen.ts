@@ -15,7 +15,7 @@ import * as L from 'leaflet';
 export class GuessScreen {
     guessForm: FormGroup;
     
-    // pc zoom/pan
+    // DESKTOP IMAGE ZOOM/PAN
     zoom = 1;
     isPanning = false;
     // image pan position relative to center
@@ -24,6 +24,11 @@ export class GuessScreen {
     // drag/pan amount
     startX = 0;
     startY = 0;
+
+    // MOBILE IMAGE ZOOM/PAN
+    lastTouchDistance = 0;
+    lastTouchX = 0;
+    lastTouchY = 0;
 
     private map: L.Map | undefined;
 
@@ -102,13 +107,65 @@ export class GuessScreen {
         return `translate(${this.pointX}px, ${this.pointY}px) scale(${this.zoom})`;
     }
 
+    // mobile touch events for pan and pinch zoom. one finger pan, two finger pinch zoom.
+    onTouchStart(event: TouchEvent) {
+        if (event.touches.length === 1 && this.zoom > 1) {
+            this.isPanning = true;
+            this.lastTouchX = event.touches[0].clientX;
+            this.lastTouchY = event.touches[0].clientY;
+        } else if (event.touches.length === 2) {
+            this.lastTouchDistance = this.getTouchDistance(event);
+        }
+    }
+
+    onTouchMove(event: TouchEvent) {
+        if (event.touches.length === 1 && this.isPanning) {
+            const clientX = event.touches[0].clientX;
+            const clientY = event.touches[0].clientY;
+
+            const deltaX = clientX - this.lastTouchX;
+            const deltaY = clientY - this.lastTouchY;
+
+            this.pointX += deltaX;
+            this.pointY += deltaY;
+
+            this.lastTouchX = clientX;
+            this.lastTouchY = clientY;
+
+        } else if (event.touches.length === 2) {
+            const currentDistance = this.getTouchDistance(event);
+            if (this.lastTouchDistance > 0) {
+                const scaleDiff = currentDistance / this.lastTouchDistance;
+                
+                const newZoom = this.zoom * scaleDiff; 
+                this.zoom = Math.min(Math.max(newZoom, 1), 5);
+            }
+            this.lastTouchDistance = currentDistance;
+            
+            if (this.zoom === 1) {
+                this.pointX = 0;
+                this.pointY = 0;
+            }
+        }
+    }
+
+    private getTouchDistance(event: TouchEvent): number {
+        const touch1 = event.touches[0];
+        const touch2 = event.touches[1];
+        return Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+    }
+
+    onTouchEnd() {
+        this.isPanning = false;
+        this.lastTouchDistance = 0;
+    }
+
     onSubmit() {
         if (this.guessForm.valid) {
             const { latitude, longitude } = this.guessForm.value;
             this.game.submitGuess(latitude, longitude);
         }
     }
-
 
     initMap() {
         const guess = this.game.getCurrGuess();
