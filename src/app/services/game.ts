@@ -1,5 +1,5 @@
 import { Injectable, signal, inject } from '@angular/core';
-import { Firestore, collection, addDoc, getDocs, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 
 @Injectable({
@@ -28,6 +28,7 @@ export class Game {
 
     async startGame() {
         this.resetGame();
+        this.preloadNextImage();
 
         const initGameLog = {
             startTime: new Date(),
@@ -49,7 +50,7 @@ export class Game {
             console.log('no gameLogId, unable to submit guess');
             return;
         }
-        // redundant?
+
         if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
             console.log('invalid coordinates');
             return;
@@ -89,10 +90,19 @@ export class Game {
         if (this.currImageIndex < this.locationImages.length) {
             this.currentImage.set(this.locationImages[this.currImageIndex]);
             this.isGuessSubmitted.set(false);
+            this.preloadNextImage();
             const isLast = this.currImageIndex === this.locationImages.length - 1;
             this.isLastImage.set(isLast);
         } else {
             this.isGameOver.set(true);
+        }
+    }
+
+    private preloadNextImage() {
+        const nextIndex = this.currImageIndex + 1;
+        if (nextIndex < this.locationImages.length) {
+            const nextImage = new Image();
+            nextImage.src = this.locationImages[nextIndex].path;
         }
     }
 

@@ -71,7 +71,7 @@
             <div>
                 <h2>Results!</h2>
                 <!-- leaflet map -->
-                <div id="result-map"></div>
+                <div #mapContainer id="map" class="map-container"></div>
 
                 <div class="feedback-message" [class.success]="50 >= getCurrDistance() " [class.failure]="getCurrDistance() > 50">
                     {{ getGuessFeedbackMessage() }}

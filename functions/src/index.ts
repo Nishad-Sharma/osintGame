@@ -5,11 +5,11 @@ functions.setGlobalOptions({ maxInstances: 5 });
 
 admin.initializeApp();
 
-export const submitGuess = functions.https.onCall(async (request: any) => { // rm context if not used??
+export const submitGuess = functions.https.onCall(async (request: any) => {
     try {
         // change user access to collections
         const db = admin.firestore();
-        let guessData = request.data;
+        let guessData = request.data ? request.data : request; // handle gen1 gen2 differences // bring back GuessData in shared lib for index/game.ts
 
         if (!guessData) {
             throw new functions.https.HttpsError('invalid-argument', 'no data provided');

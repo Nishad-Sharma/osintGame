@@ -12,7 +12,7 @@ import * as L from 'leaflet';
     templateUrl: './guess-screen.html',
     styleUrls: ['./guess-screen.scss']
 })
-export class GuessScreen {
+export class GuessScreen implements AfterViewInit, OnDestroy {
     guessForm: FormGroup;
     
     // DESKTOP IMAGE ZOOM/PAN
@@ -30,6 +30,7 @@ export class GuessScreen {
     lastTouchX = 0;
     lastTouchY = 0;
 
+    @ViewChild('mapContainer') mapContainer!: ElementRef;
     private map: L.Map | undefined;
 
     constructor(
@@ -62,6 +63,17 @@ export class GuessScreen {
                 this.map = undefined;
             }
         });
+    }
+
+    ngAfterViewInit() {
+
+    }
+
+    ngOnDestroy() {
+        if (this.map) {
+            this.map.remove();
+            this.map = undefined;
+        }
     }
 
     resetView() {
@@ -168,6 +180,9 @@ export class GuessScreen {
     }
 
     initMap() {
+        if (!this.mapContainer) return;
+        if (this.map) this.map.remove();
+
         const guess = this.game.getCurrGuess();
         const actualLocation = this.game.getActualLocation();
         const distance = this.game.getCurrDistance();
@@ -176,7 +191,7 @@ export class GuessScreen {
             return;
         }
 
-        this.map = L.map('result-map');
+        this.map = L.map(this.mapContainer.nativeElement);
 
         // provides map tile names in local lang. find diff tile servers that are english or allow choosing a lang.
         // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -256,6 +271,13 @@ export class GuessScreen {
     }
 
     nextRound() {
+        if (this.map) {
+            this.map.remove();
+            this.map = undefined;
+        }
+        
+        this.resetView();
+        this.guessForm.reset();
         this.game.nextImage();
         if (this.game.isGameOver()) {
             this.router.navigate(['/end']);
