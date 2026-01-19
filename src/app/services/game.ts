@@ -16,6 +16,7 @@ export class Game {
         {id: 'cTF2L9FFNVZwTQfzh3Uq', path: '/assets/image3.png'},
     ];
     guesses = signal<Guess[]>([]);
+    // derived signal - calced when accessed.
     currScore = computed(() => {
         return this.guesses()[this.currImageIndex]?.score || 0;
     });

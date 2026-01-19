@@ -35,7 +35,15 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
     lastTouchX = 0;
     lastTouchY = 0;
 
-    @ViewChild('mapContainer') mapContainer!: ElementRef;
+    // maybe afterNextRender?
+    // queries template for div before init map
+    @ViewChild('mapContainer') set mapContainer(element: ElementRef | undefined) {
+        if (element) {
+            this.mapContainerRef = element;
+            this.initMap();
+        }
+    }
+    private mapContainerRef: ElementRef | undefined;
     private map: L.Map | undefined;
 
     constructor(
@@ -179,7 +187,7 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
     }
 
     initMap() {
-        if (!this.mapContainer) return;
+        if (!this.mapContainerRef) return;
         if (this.map) this.map.remove();
 
         const guess = this.game.getCurrGuess();
@@ -190,7 +198,7 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
             return;
         }
 
-        this.map = L.map(this.mapContainer.nativeElement);
+        this.map = L.map(this.mapContainerRef.nativeElement);
 
         // provides map tile names in local lang. find diff tile servers that are english or allow choosing a lang.
         // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
