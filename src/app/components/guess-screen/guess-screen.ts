@@ -208,7 +208,6 @@ export class GuessScreen {
     getGuessFeedbackMessage(): string {
         const distance = this.game.getCurrDistance();
         
-        // Format: 1500m -> 1.50 km, 45m -> 45 m
         const formattedDistance = distance >= 1000 
             ? (distance / 1000).toFixed(2) + 'km' 
             : distance.toFixed(2) + 'm';

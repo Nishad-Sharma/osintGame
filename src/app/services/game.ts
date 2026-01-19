@@ -167,6 +167,10 @@ export class Game {
         return this.guesses[this.currImageIndex];
     }
 
+    getGuesses(): Guess[] {
+        return this.guesses;
+    }
+
     getActualLocation(): Location {
         return this.locationImages[this.currImageIndex];
     }
