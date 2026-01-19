@@ -10,13 +10,7 @@ import { Game, Guess } from '../../services/game'
   styleUrl: './end-game-screen.scss',
 })
 export class EndGameScreen {
-    totalScore: number;
-    guesses: Guess[] = [];
-
-    constructor(public game: Game, private router: Router) {
-        this.totalScore = this.game.getTotalScore();
-        this.guesses = this.game.getGuesses();
-    }
+    constructor(public game: Game, private router: Router) { }
 
     restartGame() {
         this.game.resetGame();

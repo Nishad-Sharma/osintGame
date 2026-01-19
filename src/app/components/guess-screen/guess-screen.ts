@@ -20,7 +20,7 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
     zoom = signal(1);
     isPanning = false;
     // image pan position relative to center
-    pointX = signal(0); //these could be signals as well but apparently not great if they update very rapidly
+    pointX = signal(0);
     pointY = signal(0);
     // drag/pan amount
     startX = 0;
@@ -54,7 +54,6 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
             if (this.game.isGuessSubmitted()) {
                 setTimeout(() => this.initMap(), 100);
             }
-            
         });
 
         effect(() => {
@@ -118,10 +117,6 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
         this.pointX.set(event.clientX - this.startX);
         this.pointY.set(event.clientY - this.startY);
     }
-  
-    // get transformStyle() {
-    //     return `translate(${this.pointX}px, ${this.pointY}px) scale(${this.zoom()})`;
-    // }
 
     // mobile touch events for pan and pinch zoom. one finger pan, two finger pinch zoom.
     onTouchStart(event: TouchEvent) {
@@ -189,8 +184,8 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
 
         const guess = this.game.getCurrGuess();
         const actualLocation = this.game.getActualLocation();
-        const distance = this.game.getCurrDistance();
-        const score = this.game.getCurrScore();
+        const distance = this.game.currDistance();
+        const score = this.game.currScore();
         if (!guess || !actualLocation || actualLocation.latitude === undefined || actualLocation.longitude === undefined) {
             return;
         }
@@ -262,18 +257,6 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
         this.map.fitBounds(points, { padding: [50, 50] });
     }
 
-    getCurrDistance(): number {
-        return this.game.getCurrDistance();
-    }
-
-    getCurrScore(): number {
-        return this.game.getCurrScore();
-    }
-
-    getTotalScore(): number {
-        return this.game.getTotalScore();
-    }
-
     nextRound() {
         if (this.map) {
             this.map.remove();
@@ -288,7 +271,7 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
     }
 
     getGuessFeedbackMessage(): string {
-        const distance = this.game.getCurrDistance();
+        const distance = this.game.currDistance();
         
         const formattedDistance = distance >= 1000 
             ? (distance / 1000).toFixed(2) + 'km' 

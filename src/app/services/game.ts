@@ -1,4 +1,4 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 
@@ -15,7 +15,17 @@ export class Game {
         {id: 'ReIfcR5IrCuojx2auXon', path: '/assets/Image2.jpg'},
         {id: 'cTF2L9FFNVZwTQfzh3Uq', path: '/assets/image3.png'},
     ];
-    private guesses: Guess[] = [];
+    guesses = signal<Guess[]>([]);
+    currScore = computed(() => {
+        return this.guesses()[this.currImageIndex]?.score || 0;
+    });
+    totalScore = computed(() => {
+        return this.guesses().reduce((acc, val) => acc + (val.score || 0), 0);
+    });
+    currDistance = computed(() => {
+        return this.guesses()[this.currImageIndex]?.distance || -1;
+    });
+
     private currImageIndex: number = 0;
     private currentGameLogId: string | null = null;
 
@@ -74,10 +84,10 @@ export class Game {
                 id: currentLocationId,
                 latitude: latitude,
                 longitude: longitude,
-                score: response.score, // fix later
-                distance: response.distance // fix later
+                score: response.score,
+                distance: response.distance
             };
-            this.guesses.push(guess);
+            this.guesses.update(current => [...current, guess]);
             this.isGuessSubmitted.set(true);
 
         } catch (error) {
@@ -108,7 +118,7 @@ export class Game {
 
     resetGame() {
         this.currImageIndex = 0;
-        this.guesses = [];
+        this.guesses.set([]);
         this.currentGameLogId = null;
         this.isGuessSubmitted.set(false);
         this.isGameOver.set(false);
@@ -116,27 +126,15 @@ export class Game {
         this.isLastImage.set(false);
     }
 
-    getCurrDistance(): number {
-        return this.guesses[this.currImageIndex].distance || 0;
-    }
-
-    getCurrScore(): number {
-        return this.guesses[this.currImageIndex].score || 0;
-    }
-
-    getTotalScore(): number {
-        return this.guesses.reduce((acc, val) => acc + (val.score || 0), 0);
-    }
-
     getCurrGuess(): Guess {
-        if (this.guesses.length == 0) {
+        if (this.guesses().length == 0) {
             throw new Error('no guesses yet.');
         }
-        return this.guesses[this.currImageIndex];
+        return this.guesses()[this.currImageIndex];
     }
 
     getGuesses(): Guess[] {
-        return this.guesses;
+        return this.guesses();
     }
 
     getActualLocation(): Location {

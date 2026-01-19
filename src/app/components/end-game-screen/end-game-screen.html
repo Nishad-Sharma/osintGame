@@ -2,11 +2,11 @@
     <div class="results">
         <h2>Game Summary</h2>
         <div>
-            @for (guess of guesses; track $index) {
+            @for (guess of game.guesses(); track $index) {
                 <div class="summary-item">
                     <h3>Location {{ $index + 1 }}</h3>
-                    <p><span class="label">Distance:</span> {{ formatDistance(guesses[$index].distance) }}</p>
-                    <p><span class="label">Points:</span> {{ guesses[$index].score }}</p>
+                    <p><span class="label">Distance:</span> {{ formatDistance(game.guesses()[$index].distance) }}</p>
+                    <p><span class="label">Points:</span> {{ game.guesses()[$index].score }}</p>
                 </div>
             }
         </div>
@@ -14,7 +14,7 @@
     <div class="results">
         <p class="label">Final Score:</p>
         <div class="score">
-            <span>{{ game.getTotalScore() }}</span>
+            <span>{{ game.totalScore() }}</span>
         </div>
     </div>
     <button class="btn" (click)="restartGame()">

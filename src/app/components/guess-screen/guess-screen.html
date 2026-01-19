@@ -22,7 +22,6 @@
             (touchend)="onTouchEnd()"
             (touchcancel)="onTouchEnd()">
         
-            <!-- reactive graph,  checks location signal and updates this attribute only -->
             <img 
                 [src]="game.currentImage()?.path" 
                 [style.transform]="transformStyle()"
@@ -74,21 +73,22 @@
                 <div #mapContainer id="map" class="map-container"></div>
 
                 <!-- hard coded 50, need fix -->
-                <div class="feedback-message" [class.success]="50 >= getCurrDistance() " [class.failure]="getCurrDistance() > 50">
+                <!-- should export minScoringdist/maxScore/minScore and have this/cloudfuncs pull. -->
+                <div class="feedback-message" [class.success]="50 >= game.currDistance() " [class.failure]="game.currDistance() > 50">
                     {{ getGuessFeedbackMessage() }}
                 </div>
 
                 <div class="results-container">
                     <div class="results-box">
                         <span class="label">Points Earned: </span>
-                        <span class="value active">+{{ getCurrScore() }}</span>
+                        <span class="value active">+{{ game.currScore() }}</span>
                     </div>
                 </div>
                 <div></div>
                 <div class="results-container">
                     <div class="results-box">
                         <span class="label">Total Points: </span>
-                        <span class="value active">{{ getTotalScore() }}</span>
+                        <span class="value active">{{ game.totalScore() }}</span>
                     </div>
                 </div>
                 @if (!game.isLastImage()) {
