@@ -25,10 +25,10 @@
             <!-- reactive graph,  checks location signal and updates this attribute only -->
             <img 
                 [src]="game.currentImage()?.path" 
-                [style.transform]="transformStyle"
+                [style.transform]="transformStyle()"
                 alt="Target Location"
                 class="image-panel"
-                [class.draggable]="zoom > 1" 
+                [class.draggable]="zoom() > 1" 
                 [class.dragging]="isPanning"
             >
         </div>
@@ -73,6 +73,7 @@
                 <!-- leaflet map -->
                 <div #mapContainer id="map" class="map-container"></div>
 
+                <!-- hard coded 50, need fix -->
                 <div class="feedback-message" [class.success]="50 >= getCurrDistance() " [class.failure]="getCurrDistance() > 50">
                     {{ getGuessFeedbackMessage() }}
                 </div>

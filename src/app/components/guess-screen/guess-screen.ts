@@ -1,4 +1,4 @@
-import { Component, effect, OnInit, ViewChild, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
+import { Component, effect, signal, computed, ViewChild, AfterViewInit, ElementRef, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Game } from '../../services/game';
@@ -10,20 +10,25 @@ import * as L from 'leaflet';
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './guess-screen.html',
-    styleUrls: ['./guess-screen.scss']
+    styleUrls: ['./guess-screen.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GuessScreen implements AfterViewInit, OnDestroy {
     guessForm: FormGroup;
     
     // DESKTOP IMAGE ZOOM/PAN
-    zoom = 1;
+    zoom = signal(1);
     isPanning = false;
     // image pan position relative to center
-    pointX = 0;
-    pointY = 0;
+    pointX = signal(0); //these could be signals as well but apparently not great if they update very rapidly
+    pointY = signal(0);
     // drag/pan amount
     startX = 0;
     startY = 0;
+
+    transformStyle = computed(() => 
+        `translate(${this.pointX()}px, ${this.pointY()}px) scale(${this.zoom()})`
+    );
 
     // MOBILE IMAGE ZOOM/PAN
     lastTouchDistance = 0;
@@ -57,7 +62,7 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
             // simple way to check for new turn, not a great solution - unintuitive. 
             // should have a turn counter in game service and check when that is incremented.
             if (this.game.currentImage()) {
-                this.resetView();
+                this.zoom.set(1);
                 this.guessForm.reset();
                 this.map?.remove();
                 this.map = undefined;
@@ -77,9 +82,8 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
     }
 
     resetView() {
-        this.zoom = 1;
-        this.pointX = 0;
-        this.pointY = 0;
+        this.pointX.set(0);
+        this.pointY.set(0);
         this.startX = 0;
         this.startY = 0;
     }
@@ -88,21 +92,21 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
         event.preventDefault(); // stop webpage scroll to be replaced with image zoom
         const zoomIntensity = 0.1;
         const direction = event.deltaY > 0 ? -1 : 1;
-        const newZoom = this.zoom + (direction * zoomIntensity);
-        this.zoom = Math.min(Math.max(newZoom, 1), 5);
+        const newZoom = this.zoom() + (direction * zoomIntensity);
+        this.zoom.set(Math.min(Math.max(newZoom, 1), 5));
         // reset pan if default zoom
-        if (this.zoom === 1) { 
-            this.pointX = 0; 
-            this.pointY = 0; 
+        if (this.zoom() === 1) { 
+            this.pointX.set(0);
+            this.pointY.set(0); 
         } 
     }
 
     onMouseDown(event: MouseEvent) {
-        if (this.zoom > 1) {
+        if (this.zoom() > 1) {
             event.preventDefault();
             this.isPanning = true;
-            this.startX = event.clientX - this.pointX;
-            this.startY = event.clientY - this.pointY;
+            this.startX = event.clientX - this.pointX();
+            this.startY = event.clientY - this.pointY();
         }
     }
 
@@ -111,17 +115,17 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
     onMouseMove(event: MouseEvent) {
         if (!this.isPanning) return;
         event.preventDefault();
-        this.pointX = event.clientX - this.startX;
-        this.pointY = event.clientY - this.startY;
+        this.pointX.set(event.clientX - this.startX);
+        this.pointY.set(event.clientY - this.startY);
     }
   
-    get transformStyle() {
-        return `translate(${this.pointX}px, ${this.pointY}px) scale(${this.zoom})`;
-    }
+    // get transformStyle() {
+    //     return `translate(${this.pointX}px, ${this.pointY}px) scale(${this.zoom()})`;
+    // }
 
     // mobile touch events for pan and pinch zoom. one finger pan, two finger pinch zoom.
     onTouchStart(event: TouchEvent) {
-        if (event.touches.length === 1 && this.zoom > 1) {
+        if (event.touches.length === 1 && this.zoom() > 1) {
             this.isPanning = true;
             this.lastTouchX = event.touches[0].clientX;
             this.lastTouchY = event.touches[0].clientY;
@@ -138,8 +142,8 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
             const deltaX = clientX - this.lastTouchX;
             const deltaY = clientY - this.lastTouchY;
 
-            this.pointX += deltaX;
-            this.pointY += deltaY;
+            this.pointX.set(this.pointX() + deltaX);
+            this.pointY.set(this.pointY() + deltaY);
 
             this.lastTouchX = clientX;
             this.lastTouchY = clientY;
@@ -149,14 +153,14 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
             if (this.lastTouchDistance > 0) {
                 const scaleDiff = currentDistance / this.lastTouchDistance;
                 
-                const newZoom = this.zoom * scaleDiff; 
-                this.zoom = Math.min(Math.max(newZoom, 1), 5);
+                const newZoom = this.zoom() * scaleDiff; 
+                this.zoom.set(Math.min(Math.max(newZoom, 1), 5));
             }
             this.lastTouchDistance = currentDistance;
             
-            if (this.zoom === 1) {
-                this.pointX = 0;
-                this.pointY = 0;
+            if (this.zoom() === 1) {
+                this.pointX.set(0);
+                this.pointY.set(0);
             }
         }
     }
@@ -275,7 +279,6 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
             this.map.remove();
             this.map = undefined;
         }
-        
         this.resetView();
         this.guessForm.reset();
         this.game.nextImage();
