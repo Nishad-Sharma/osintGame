@@ -4,6 +4,7 @@ import { Game, Guess } from '../../services/game'
 
 @Component({
   selector: 'app-end-game-screen',
+  standalone: true,
   imports: [],
   templateUrl: './end-game-screen.html',
   styleUrl: './end-game-screen.scss',
