@@ -19,10 +19,10 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
     // DESKTOP IMAGE ZOOM/PAN
     zoom = signal(1);
     isPanning = false;
-    // image pan position relative to center
+    // image pan position relative to starting point
     pointX = signal(0);
     pointY = signal(0);
-    // drag/pan amount
+    // drag/pan amount - mouse down start
     startX = 0;
     startY = 0;
 

@@ -62,6 +62,7 @@ export class Game {
             return;
         }
 
+        // move to cloud func
         if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
             console.log('invalid coordinates');
             return;
