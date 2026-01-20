@@ -39,7 +39,7 @@ export class Game {
 
     async startGame() {
         this.resetGame();
-        this.preloadNextImage();
+        this.preloadImage(this.currImageIndex + 1);
 
         const initGameLog = {
             startTime: new Date(),
@@ -101,7 +101,7 @@ export class Game {
         if (this.currImageIndex < this.locationImages.length) {
             this.currentImage.set(this.locationImages[this.currImageIndex]);
             this.isGuessSubmitted.set(false);
-            this.preloadNextImage();
+            this.preloadImage(this.currImageIndex + 1);
             const isLast = this.currImageIndex === this.locationImages.length - 1;
             this.isLastImage.set(isLast);
         } else {
@@ -109,11 +109,10 @@ export class Game {
         }
     }
 
-    private preloadNextImage() {
-        const nextIndex = this.currImageIndex + 1;
-        if (nextIndex < this.locationImages.length) {
+    preloadImage(index: number) {
+        if (index < this.locationImages.length) {
             const nextImage = new Image();
-            nextImage.src = this.locationImages[nextIndex].path;
+            nextImage.src = this.locationImages[index].path;
         }
     }
 

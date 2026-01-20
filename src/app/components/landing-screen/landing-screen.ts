@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Game } from '../../services/game';
 
@@ -10,8 +10,12 @@ import { Game } from '../../services/game';
   styleUrl: './landing-screen.scss',
 })
 
-export class LandingScreen {
+export class LandingScreen implements OnInit {
     constructor(private game: Game, private router: Router) {}
+
+    ngOnInit() {
+        this.game.preloadImage(0)
+    }
 
     async startGame() {
         await this.game.startGame();
