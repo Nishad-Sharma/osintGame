@@ -32,6 +32,7 @@ export class Game {
 
     currentImage = signal<Location | null>(this.locationImages[0]);
     isGuessSubmitted = signal<boolean>(false);
+    isGuessSubmitting = signal<boolean>(false);
     isGameOver = signal<boolean>(false);
     isLastImage = signal<boolean>(false);
 

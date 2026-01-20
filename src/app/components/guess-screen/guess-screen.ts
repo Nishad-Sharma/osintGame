@@ -174,9 +174,11 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
     }
 
     onSubmit() {
-        if (this.guessForm.valid) {
+        if (this.guessForm.valid && !this.game.isGuessSubmitting()) {
+            this.game.isGuessSubmitting.set(true);
             const { latitude, longitude } = this.guessForm.value;
             this.game.submitGuess(latitude, longitude);
+            
         }
     }
 
@@ -267,6 +269,8 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
         this.resetView();
         this.guessForm.reset();
         this.game.nextImage();
+        this.game.isGuessSubmitting.set(false);
+        
         if (this.game.isGameOver()) {
             this.router.navigate(['/end']);
         } 
