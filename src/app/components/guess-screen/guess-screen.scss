@@ -78,8 +78,16 @@
 
     h2 { 
         text-align: center;
-        color: var(--accent-color); 
+        color: var(--text-main); 
         margin-bottom: 2rem; 
+    }
+    
+    h3 {
+        text-align: center;
+        color: var(--text-main);
+        font-weight: normal;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
     }
 }
 

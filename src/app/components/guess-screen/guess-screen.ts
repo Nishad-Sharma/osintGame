@@ -58,13 +58,6 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
         });
 
         effect(() => {
-            // init map after guess.
-            if (this.game.isGuessSubmitted()) {
-                setTimeout(() => this.initMap(), 100);
-            }
-        });
-
-        effect(() => {
             // new image, reset view and input form and removes the map.
             // simple way to check for new turn, not a great solution - unintuitive. 
             // should have a turn counter in game service and check when that is incremented.

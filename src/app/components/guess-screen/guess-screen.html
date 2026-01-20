@@ -27,6 +27,8 @@
     <div class="input-panel">
         @if (!game.isGuessSubmitted()) {
             <h2>Input Coordinates</h2>
+            <h3>To score points your guess must be within 50m</h3>
+            <h3>A maximum score of 15 for an exact guess</h3>
             <!-- binds entire form to guessForm -->
             <form [formGroup]="guessForm" (ngSubmit)="onSubmit()">
                 <div class="input-group">

@@ -109,6 +109,7 @@ export class Game {
         }
     }
 
+    // async if pulling from firebase storage
     preloadImage(index: number) {
         if (index < this.locationImages.length) {
             const nextImage = new Image();

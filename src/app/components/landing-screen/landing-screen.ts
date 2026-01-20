@@ -14,6 +14,8 @@ export class LandingScreen implements OnInit {
     constructor(private game: Game, private router: Router) {}
 
     ngOnInit() {
+        // this preload is to speedup first image load time
+        // this was originally pulling asset path from firestore, now just local assets folder
         this.game.preloadImage(0)
     }
 

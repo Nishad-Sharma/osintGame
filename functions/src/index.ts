@@ -5,6 +5,11 @@ functions.setGlobalOptions({ maxInstances: 5 });
 
 admin.initializeApp();
 
+const minScoringDistance = 50;
+const maxScore = 15;
+const minScore = 1;
+const earthRadiusM = 6371000;
+
 export const submitGuess = functions.https.onCall(async (request: any) => {
     try {
         // change user access to collections
@@ -72,11 +77,6 @@ export const submitGuess = functions.https.onCall(async (request: any) => {
         throw new functions.https.HttpsError('internal', 'An internal error occurred during guess submission.', error);
     }
 });
-
-const minScoringDistance = 50;
-const maxScore = 15;
-const minScore = 1;
-const earthRadiusM = 6371000;
 
 // // TODO: these two functions should be extracted to common lib.
 function calculateScore(distance: number): number {
