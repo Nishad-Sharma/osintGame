@@ -23,9 +23,9 @@ export class Game {
     totalScore = computed(() => {
         return this.guesses().reduce((acc, val) => acc + (val.score || 0), 0);
     });
-    currDistance = computed(() => {
-        return this.guesses()[this.currImageIndex]?.distance || -1;
-    });
+    // currDistance = computed(() => {
+    //     return this.guesses()[this.currImageIndex]?.distance ?? -1;
+    // });
 
     private currImageIndex: number = 0;
     private currentGameLogId: string | null = null;
@@ -135,6 +135,10 @@ export class Game {
         return this.guesses()[this.currImageIndex];
     }
 
+    getCurrDistance(): number {
+        return this.guesses()[this.currImageIndex].distance;
+    }
+
     getGuesses(): Guess[] {
         return this.guesses();
     }
@@ -155,8 +159,8 @@ export interface Guess {
     id: string; // make image id
     latitude: number;
     longitude: number;
-    score?: number; // use cloud fns so users can't cheat
-    distance?: number;
+    score: number; // use cloud fns so users can't cheat
+    distance: number;
 }
 
 export interface GameLog {

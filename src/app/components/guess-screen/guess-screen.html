@@ -67,7 +67,7 @@
 
                 <!-- hard coded 50, need fix -->
                 <!-- should export minScoringdist/maxScore/minScore and have this/cloudfuncs pull. -->
-                <div class="feedback-message" [class.success]="50 >= game.currDistance() " [class.failure]="game.currDistance() > 50">
+                <div class="feedback-message" [class.success]="50 >= game.getCurrDistance() " [class.failure]="game.getCurrDistance() > 50">
                     {{ getGuessFeedbackMessage() }}
                 </div>
 

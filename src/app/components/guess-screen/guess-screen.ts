@@ -36,6 +36,7 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
     lastTouchY = 0;
 
     // maybe afterNextRender?
+    // afterViewinit
     // queries template for div before init map
     @ViewChild('mapContainer') set mapContainer(element: ElementRef | undefined) {
         if (element) {
@@ -185,7 +186,7 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
 
         const guess = this.game.getCurrGuess();
         const actualLocation = this.game.getActualLocation();
-        const distance = this.game.currDistance();
+        const distance = this.game.getCurrDistance();
         const score = this.game.currScore();
         if (!guess || !actualLocation || actualLocation.latitude === undefined || actualLocation.longitude === undefined) {
             return;
@@ -272,7 +273,7 @@ export class GuessScreen implements AfterViewInit, OnDestroy {
     }
 
     getGuessFeedbackMessage(): string {
-        const distance = this.game.currDistance();
+        const distance = this.game.getCurrDistance();
         
         const formattedDistance = distance >= 1000 
             ? (distance / 1000).toFixed(2) + 'km' 

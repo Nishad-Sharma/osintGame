@@ -78,7 +78,6 @@ export const submitGuess = functions.https.onCall(async (request: any) => {
     }
 });
 
-// // TODO: these two functions should be extracted to common lib.
 function calculateScore(distance: number): number {
     if (distance > minScoringDistance) {
         return 0;
